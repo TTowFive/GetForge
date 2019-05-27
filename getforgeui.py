@@ -76,6 +76,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.textBrowser.setFont(font)
+        self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setObjectName("textBrowser")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
