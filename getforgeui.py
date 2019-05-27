@@ -138,6 +138,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setToolTip(_translate("MainWindow", "下载的默认路径为程序的同一路径"))
         self.pushButton_2.setText(_translate("MainWindow", "下载最新版\n"
 "Forge"))
-        self.label_4.setText(_translate("MainWindow", "V1.0  最初版本，极不稳定，若程序卡死，请等待获取"))
+        self.label_4.setText(_translate("MainWindow", "V2.0 "))
 
 
