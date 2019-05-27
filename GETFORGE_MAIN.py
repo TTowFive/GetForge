@@ -7,6 +7,7 @@ import re
 class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
     text = ''
     ForgeVersion = ''
+    FILETYPE = ''
     def __init__( self ):
         super(WIN,self).__init__()
         self.setupUi( self )
@@ -20,7 +21,21 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
 
     
     def Dowload_Laster(self):
-        print ('sad')
+        try:
+            self.NewestAddr = self.ForgeAddressList[-1]
+        except:
+            print ("请先“获取”再点击下载")
+
+        res = urllib.request.urlopen( self.NewestAddr )
+        # print ( self.NewestAddr )
+        theForgeData = res.read()
+        print (theForgeData)
+
+        file = open( "Forge" + self.ForgeVersion + "." + self.FILETYPE ,"ab" )
+
+        file.write( theForgeData )
+
+        file.close()
 
     def Get(self):
         self.text = self.comboBox.currentIndex()
@@ -43,6 +58,8 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
 
 
     def SELECT(self,FILETYPE):
+        self.FILETYPE = FILETYPE
+        self.textBrowser.clear()
 
         self.URL = 'https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_' + self.ForgeVersion + '.html'
         print (self.URL)
@@ -54,14 +71,14 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
             websiteInfo = respond.read().decode('utf-8')
             SelRuler = r"https*://file.*" + FILETYPE  # 筛选规则
             ob = re.compile(SelRuler)
-            ForgeAddressList = ob.findall(websiteInfo)
+            self.ForgeAddressList = ob.findall(websiteInfo)
 
 
-            print(ForgeAddressList[0])
-            ForgeAddressList = sorted(ForgeAddressList)
+            print(self.ForgeAddressList[0])
+            ForgeAddressList = sorted(self.ForgeAddressList)
         
             count = 1
-            for i in ForgeAddressList:
+            for i in self.ForgeAddressList:
                 self.textBrowser.append( str( count ) + '.' + '<a href =' + i + ">" + i + "</a>" + '<br>' )
                 count += 1
         except:
