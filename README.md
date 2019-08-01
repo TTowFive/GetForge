@@ -2,4 +2,4 @@
 
 <h1>How to use</h1>
 
-python GetForge.py
+python GETFORGE_MAIN.py
