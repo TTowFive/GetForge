@@ -14,6 +14,7 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
         self.setupUi( self )
         self.text = ''
         self.ButtonSolve()
+        self.NewestAddr = ''
         #self.textBrowser.append("1." "<a href='#'>https://files.minecraftforge.net/maven/net/minecraftforge/f""orge/1.12.2-14.23.5.2838/forge-1.12.2-14.23.5.2838-installer-win.exe</a><br>" )
 
     def ButtonSolve(self): #检查事件
@@ -28,24 +29,33 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
             self.NewestAddr = self.ForgeAddressList[-1]
         except:
             print ("请先“获取”再点击下载")
+            QtWidgets.QMessageBox.question(self, '警告!', '请先“获取”再点击下载',
+                                           QtWidgets.QMessageBox.Yes |
+                                           QtWidgets.QMessageBox.No,
+                                           QtWidgets.QMessageBox.Yes)
+            return 0;
 
         res = urllib.request.urlopen( self.NewestAddr )
-        # print ( self.NewestAddr )
-        file = open("Forge" + self.ForgeVersion + "." + self.FILETYPE, "wb")
+        print ( self.NewestAddr )
+        with open("Forge" + self.ForgeVersion + "." + self.FILETYPE, "wb") as file:
+            QtWidgets.QMessageBox.question(self, '提示', '文件下载中...'
+                                           , QtWidgets.QMessageBox.Yes |
+                                           QtWidgets.QMessageBox.No,
+                                           QtWidgets.QMessageBox.No)
+            while True:
+                theForgeData = res.readline()
+                file.write(theForgeData)
+                self.Content[0] += str(theForgeData)
+                if not theForgeData:
+                    break
 
-        while True:
-            theForgeData = res.readline()
-            file.write(theForgeData)
-            # self.Content[0] += str(theForgeData)
-            if not theForgeData:
-                break
 
-        file.close()
 
         QtWidgets.QMessageBox.question(self,'提示','文件下载完毕'
                                        ,QtWidgets.QMessageBox.Yes |
                                        QtWidgets.QMessageBox.No,
                                        QtWidgets.QMessageBox.No)
+        print('done')
 
     def Get(self):  #取得combobox的内容并判断
         self.text = self.comboBox.currentIndex()
@@ -78,6 +88,12 @@ class WIN( Ui_MainWindow,QtWidgets.QMainWindow ):
         
         try:
             respond = urllib.request.urlopen( self.URL )
+            #respond = urllib.request.urlopen( url=self.URL )
+
+            QtWidgets.QMessageBox.question(self, '提示', '查找'+ self.ForgeVersion +'版本forge中...'
+                                           , QtWidgets.QMessageBox.Yes |
+                                           QtWidgets.QMessageBox.No,
+                                           QtWidgets.QMessageBox.No)
 
             while True:#逐行取得网页内容
                 websiteInfo = respond.readline().decode('utf-8')
